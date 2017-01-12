@@ -141,14 +141,15 @@
                 <!-- Example of classpath metadata with Extended Metadata -->
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                     <constructor-arg>
-                        <bean class="org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider">
+                        <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
+                            <!-- URL containing the metadata -->
                             <constructor-arg>
-                                <bean class="java.util.Timer"/>
+								 <value type="java.lang.String">https://identity.mimovistar.com.pe/oamfed/idp/metadata</value>
+                                <!-- <value type="java.lang.String">http://sun67idmt1:8888/oamfed/idp/metadata</value> -->
                             </constructor-arg>
+                            <!-- Timeout for metadata loading in ms -->
                             <constructor-arg>
-                                <bean class="org.opensaml.util.resource.ClasspathResource">
-                                    <constructor-arg value="/metadata/idp.xml"/>
-                                </bean>
+                                <value type="int">15000</value>
                             </constructor-arg>
                             <property name="parserPool" ref="parserPool"/>
                         </bean>
@@ -157,19 +158,9 @@
                         <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
                         </bean>
                     </constructor-arg>
+                    <property name="metadataTrustCheck" value="false"/>
                 </bean>
                 <!-- Example of HTTP metadata without Extended Metadata -->
-                <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
-                    <!-- URL containing the metadata -->
-                    <constructor-arg>
-                        <value type="java.lang.String">http://idp.ssocircle.com/idp-meta.xml</value>
-                    </constructor-arg>
-                    <!-- Timeout for metadata loading in ms -->
-                    <constructor-arg>
-                        <value type="int">15000</value>
-                    </constructor-arg>
-                    <property name="parserPool" ref="parserPool"/>
-                </bean>
                 <!-- Example of file system metadata without Extended Metadata -->
                 <!--
                 <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
